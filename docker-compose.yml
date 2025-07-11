@@ -1,0 +1,45 @@
+version: '3.8'
+
+services:
+  # Backend service
+  backend:
+    build:
+      context: .
+      dockerfile: backend.Dockerfile
+    ports:
+      - "5000:5000"
+    environment:
+      - NODE_ENV=production
+      - EMAIL_USR=${EMAIL_USR}
+      - APP_PASS=${APP_PASS}
+      - CLOUD_NAME=${CLOUD_NAME}
+      - API_KEY=${API_KEY}
+      - API_SECRET=${API_SECRET}
+      - DB_HOST=bvuqipi0a6c4ti09dhjj-mysql.services.clever-cloud.com
+      - DB_USER=ui0wmhhinavbtwtg
+      - DB_PASSWORD=OVvi1Hy20LSqkRMazApC
+      - DB_NAME=bvuqipi0a6c4ti09dhjj
+      - DB_PORT=3306
+      - REDIS_URL=rediss://default:AS7EAAIjcDFhZDUzMjJiNjFkMTQ0YWZkOTg1MzYxZjc5ZTliNjFjM3AxMA@valued-serval-11972.upstash.io:6379
+    volumes:
+      - ./backend/tmp:/app/tmp
+    networks:
+      - shelfx-network
+    # Add signal handling configuration
+    stop_grace_period: 1m
+    stop_signal: SIGTERM
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    # No longer depends on local Redis service
+
+  # Redis service removed - using Upstash Redis instead
+
+  # Database service removed - using cloud database instead
+
+networks:
+  shelfx-network:
+    driver: bridge
