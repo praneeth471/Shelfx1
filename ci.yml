@@ -1,0 +1,45 @@
+on:
+  push:
+    branches:
+      - dev
+  pull_request:
+    branches:
+      - dev
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [20.x]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Clean and install dependencies
+        run: |
+          rm -rf node_modules package-lock.json
+          npm install
+
+      - name: Run audit (non-blocking)
+        run: npm audit || true
+
+      - name: Run tests
+        run: |
+          cd backend
+          npm test
+          cd ../frontend
+          npm test
+
+      - name: Build frontend
+        run: npm run build
+
+      - name: Deploy to production
+        run: |
+          echo "✅ Build successful. Deploy step goes here."
