@@ -1,0 +1,17 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.big-shoulders-inline-text-nav {
+    font-family: "Big Shoulders Inline Text", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 800;
+    font-style: normal;
+  }
+
+  .big-shoulders-inline-text-h1 {
+    font-family: "Big Shoulders Inline Text", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 900;
+    font-style: normal;
+  }
